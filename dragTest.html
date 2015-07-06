@@ -1,0 +1,135 @@
+<html>
+    <head>
+        <title>Draggable test</title>
+        <script type="text/javascript" src="js/jquery/jquery.min.js"></script>
+        <script type="text/javascript" src="SDND.js"></script>
+        <style type="text/css">
+            .draggable {
+                background-color: grey; 
+                width: auto;
+                height:auto;
+                border-style: solid;
+                border-width:10px;
+                border-color:rgb(214, 221, 224);
+                border-bottom-color: rgba(0,0,0,0);
+                border-top-color: grey;
+                position: relative;
+            }
+            
+            ul {
+                list-style-type: none;  
+            }
+            ul li {
+                display:inline;
+                padding: 10px;
+            }
+            
+            .handler {
+                background: yellow;
+            }
+        </style>
+    </head>
+    <body>
+        <div>
+            <ul>
+                <li>
+                    <h2>Draggable sample 1</h2>
+                    <p><strong>Desctiption:</strong> moves element around screen with a simple single of line code: new SDND('draggable1').init();</p>
+                    <br />
+                </li>
+                <li class="draggable a">item 1</li>
+                <li class="draggable a">item 2</li>
+                <li class="draggable a">item 3</li>
+                <li class="draggable a">item 4</li>
+            </ul>
+            <ul>
+                <li>
+                    <h2>Draggable sample 2</h2>
+                    <p><b>Desctiption: drag by a clild element/class  and  reverts to original position</b></p>
+                    <br />
+                </li>
+                <li class="draggable b">
+                    item 1 -
+                    <span class="handler">drag handler</span>
+                </li>
+                <li class="draggable b">
+                    item 2 -
+                    <a class="handler">drag handler</a>
+                </li>
+                <li class="draggable b" style="background: grey;">
+                    item 3 -
+                    <a class="handler">drag handler</a>
+                </li>
+                <li class="draggable b">
+                    item 4 -
+                    <a class="handler">drag handler</a>
+                </li>
+            </ul>
+            <ul>
+                <li>
+                    <h2>Draggable sample 3</h2>
+                    <p><b>Desctiption:</b> calls user functions during dragStart(), dragging() and dragEnd()</p>
+                    <br />
+                </li>
+                <li class="draggable c">item 1</li>
+                <li class="draggable c">item 2</li>
+                <li class="draggable c">item 3</li>
+                <li class="draggable c">item 4</li>
+            </ul>
+            <ul>
+                <li>
+                    <h2>Draggable sample 4</h2>
+                    <p><b>Desctiption: preserves original element and drags a clone</b></p>
+                    <br />
+                </li>
+                <li class="draggable d">item 1</li>
+                <li class="draggable d">item 2</li>
+                <li class="draggable d">item 3</li>
+                <li class="draggable d">item 4</li>
+            </ul>
+        </div>
+        
+        
+        <script type="text/javascript">
+            //Draggable sample 1
+            new SDND('.draggable.a').init();
+            
+            //Draggable sample 2
+            var drag2 = new SDND('.draggable.b');
+            drag2.options.elHandler = '.handler';
+            drag2.options.revert = true;
+            drag2.init();
+            
+            //Draggable sample 3
+            var drag3 = new SDND('.draggable.c');
+            drag3.options.revert = true;
+            drag3.callbacks = {
+                dragStart : function() { 
+                    drag3.currentEl.text('dragStart event called'); 
+                },
+                dragging : function() {
+                    drag3.currentEl.text('dragging event called'); 
+                },
+                dragEnd : function() {
+                    drag3.currentEl.text('dragEnd event called'); 
+                }
+            };
+            drag3.init();
+            
+            //Draggable sample 4
+            var drag4 = new SDND('.draggable.d');
+            drag4.options.moveOriginal = false;
+            drag4.options.revert = true;
+            drag4.init();
+            
+            
+            var counter = 1;
+            var sum = 0;
+            for (var counter = 1; counter <= 5; counter++) {
+                sum += counter;
+            }
+            console.log(sum);
+        </script>
+    </body>
+
+</html>
