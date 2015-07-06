@@ -4,7 +4,7 @@
  * Released under MIT license
  */
 /*
-    document all css changes while dragging and revert to original state if revert = true
+    todo: document all css changes while dragging and revert to original state if revert = true
 */
 
 //define object
@@ -28,7 +28,7 @@ var SDND = function(el) {
         dragging        :   function() { },
         dragEnd        :   function() { }
     };
-    this.data = {};                     //optional || could be useful for droppable function
+    this.data = {};                     //optional || could be useful for droppable function 
     
 };
 
