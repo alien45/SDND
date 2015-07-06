@@ -1,7 +1,7 @@
 /*
  * Simple DragNDrop
  * Author: Toufiqur Chowdhury
- * 
+ * Released under MIT license
  */
 /*
     document all css changes while dragging and revert to original state if revert = true
@@ -18,8 +18,9 @@ var SDND = function(el) {
         'moveOriginal'      :   true,
         'revert'            :   false,  // if moveOriginal = false
         'cloneEvents'       :   true,   // whether to preserve events when cloning element << if moveOriginal = false
-        'elHandler'        :   '',      // jQuery selector that will control/initiate drag
-        'elOverlay'         :   ''      // jQuery selector or object accepted
+        'elHandler'         :   '',     // jQuery selector that will control/initiate drag
+        'elOverlay'         :   '',     // jQuery selector or object accepted
+        'fixedPosition'     :   false   // false > position:absolute, true > position:fixed
     };
     
     this.callbacks = {
@@ -43,6 +44,7 @@ SDND.prototype.init = function(){
     var revert = options.revert;
     var cloneEvents = options.cloneEvents;
     var $elOverlay = $(options.elOverlay).clone(true);
+    var position = (options.fixedPosition ? 'fixed' : 'absolute');
     
     
     var xOffset = 0
@@ -66,17 +68,18 @@ SDND.prototype.init = function(){
     
     //dragStart
     $(document).on("mousedown", elHandler,function(e){
-        console.log("mousedown: " + e.target.nodeName);
+//        console.log("\nmousedown: " + e.target.nodeName);
         //e.preventDefault();
         
         
-        $currentEl = obj.currentEl = obj.currentElOriginal = $(e.target).closest(el);
-        if ( typeof $currentEl == 'undefined' ) {
+        if ( typeof $(e.target).closest(el) == 'undefined' ) {
             dragStarted = false;
         } else {
             dragStarted = true;
+            $currentEl = obj.currentEl = obj.currentElOriginal = $(e.target).closest(el);
             obj.currentElOriginalStyleAttr = obj.currentElOriginal.attr('style');
             var pos = $currentEl.offset();
+
             xOffset = e.pageX - pos.left;
             yOffset = e.pageY - pos.top;
             $('body').css({'user-select'   :  'none'}); //make text unselectable only during drag
@@ -91,12 +94,19 @@ SDND.prototype.init = function(){
         this is most likely the reason jQuery-ui has the same issues
     */
     $(document).mousemove(function(e){
-        //e.preventDefault(); //do not use
-        
+        //e.preventDefault(); //do not use;
         if (dragStarted) {
+            
+            
+            var pageX = e.pageX;
+            var pageY = e.pageY;
+            if (position == 'fixed') {
+                //adjust position to keep element on screen
+                pageX -= $(document).scrollLeft();
+                pageY -= $(document).scrollTop();
+            }
+            
             $(el).css({'z-index' : ''});
-             var top = 0;
-             var left = 0;
             //first time dragging
             if (!isDragging) {
                 //user callback function
@@ -104,20 +114,18 @@ SDND.prototype.init = function(){
             }
             if (!moveOriginal && !isDragging) {
                 $clone = $currentEl.clone( cloneEvents );
-                top = e.pageY;
-                left = e.pageX;
                 //$('body').append($clone);
                 $clone.insertAfter($currentEl);
             } else {
-                top = e.pageY - yOffset;
-                left = e.pageX - xOffset;
+                pageY -= yOffset;
+                pageX -= xOffset;
             }
             isDragging = true;
             $currentEl = (moveOriginal) ? $currentEl : $clone;
             $currentEl.css({
-                'position'  :   'fixed',
-                'top'       :   top + "px",
-                'left'      :   left + "px",
+                'position'  :   position,
+                'top'       :   pageY + "px",
+                'left'      :   pageX + "px",
                 'z-index'   :   9999999999
             });
              
@@ -149,15 +157,21 @@ SDND.prototype.init = function(){
         if (isDragging) {
             if (!moveOriginal) {
                 $currentEl = $clone;
-                pos = $currentEl.position(); 
+                var pos = $currentEl.offset();
+                if (position == 'fixed') {
+                    //adjust position to keep element on screen
+                    pos.left -= $(document).scrollLeft();
+                    pos.top -= $(document).scrollTop();
+                }
                 $currentEl.css({
-                    'position'      :   'fixed',
+                    'position'      :   position,
                     'top'           :   pos.top + 'px',
                     'left'          :   pos.left + 'px'
                 });
                 if (revert) $clone.remove();
             } else {
                 if (revert) {
+                    //revert element to original place
                     var style = obj.currentElOriginalStyleAttr;
                     style = (typeof style == 'undefined') ? '' : style;
                     $currentEl.attr('style', style);

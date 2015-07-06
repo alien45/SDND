@@ -1,95 +1,177 @@
-<html>
-    <head>
-        <title>Draggable test</title>
-        <script type="text/javascript" src="jquery.min.js"></script>
-        <script type="text/javascript" src="SDND.js"></script>
-        <style type="text/css">
-            .draggable {
-                background-color: grey; 
-                width: auto;
-                height:auto;
-                border-style: solid;
-                border-width:10px;
-                border-color:rgb(214, 221, 224);
-                border-bottom-color: rgba(0,0,0,0);
-                border-top-color: grey;
-                position: relative;
-            }
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>SDND - Simple DragNDrop by alien45</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+      
+      
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <script type="text/javascript" src="SDND.js"></script>
+      
+    <style type="text/css">
+        .draggable {
+            background-color: grey; 
+            width: auto;
+            height:auto;
+            border-style: solid;
+            border-width:10px;
+            border-color:rgb(214, 221, 224);
+            border-bottom-color: rgba(0,0,0,0);
+            border-top-color: grey;
+            position: relative;
+        }
+        
+        ul {
+            list-style-type: none;  
+        }
+        ul li {
+            display:inline;
+            padding: 10px;
+        }
+        
+        .handler {
+            background: yellow;
+        }
+    </style>
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">SDND - Simple DragNDrop</h1>
+<!--      <h2 class="project-tagline">Drag & Drop made easy!</h2>-->
+      <h2 class="project-tagline">by Toufiqur Chowdhury</h2>
+      <a href="https://github.com/alien45/SDND" class="btn">View on GitHub</a>
+      <a href="https://github.com/alien45/SDND/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/alien45/SDND/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+        <h1>
+        <a id="sdnd---simple-dragndrop" class="anchor" href="#sdnd---simple-dragndrop" aria-hidden="true"><span class="octicon octicon-link"></span></a>SDND - Simple DragNDrop</h1>
+    
+        <p>SDND is a very lightweight JavaScript &amp; jQuery based plugin that allows you to make any HTML element draggable (and droppable functionality will be added soon) with a simple line of code. </p>
+        
+        <p>You can add callback functions and lot more. Head over to the project page on GitHub for more details or download and try it out yourself. It is free to use and released under MIT license. Enjoy :)</p>
+    
+    
+    
+        <h2>Draggable sample 1</h2>
+        <h3>Desctiption:</h3>
+        <p>Drag/move element around the screen with a simple single of line code. Supports standard jQuery selector.</p>
             
-            ul {
-                list-style-type: none;  
-            }
-            ul li {
-                display:inline;
-                padding: 10px;
-            }
+        <h3>Code:</h3>
+        <blockquote>
+            <p>new SDND('.draggable.a').init();</p>
+        </blockquote>
             
-            .handler {
-                background: yellow;
-            }
-        </style>
-    </head>
-    <body>
-        <div>
-            <ul>
-                <li>
-                    <h2>Draggable sample 1</h2>
-                    <p><strong>Desctiption:</strong> moves element around screen with a simple single of line code: new SDND('draggable1').init();</p>
-                    <br />
-                </li>
-                <li class="draggable a">item 1</li>
-                <li class="draggable a">item 2</li>
-                <li class="draggable a">item 3</li>
-                <li class="draggable a">item 4</li>
-            </ul>
-            <ul>
-                <li>
-                    <h2>Draggable sample 2</h2>
-                    <p><b>Desctiption: drag by a clild element/class  and  reverts to original position</b></p>
-                    <br />
-                </li>
-                <li class="draggable b">
-                    item 1 -
-                    <span class="handler">drag handler</span>
-                </li>
-                <li class="draggable b">
-                    item 2 -
-                    <a class="handler">drag handler</a>
-                </li>
-                <li class="draggable b" style="background: grey;">
-                    item 3 -
-                    <a class="handler">drag handler</a>
-                </li>
-                <li class="draggable b">
-                    item 4 -
-                    <a class="handler">drag handler</a>
-                </li>
-            </ul>
-            <ul>
-                <li>
-                    <h2>Draggable sample 3</h2>
-                    <p><b>Desctiption:</b> calls user functions during dragStart(), dragging() and dragEnd()</p>
-                    <br />
-                </li>
-                <li class="draggable c">item 1</li>
-                <li class="draggable c">item 2</li>
-                <li class="draggable c">item 3</li>
-                <li class="draggable c">item 4</li>
-            </ul>
-            <ul>
-                <li>
-                    <h2>Draggable sample 4</h2>
-                    <p><b>Desctiption: preserves original element and drags a clone</b></p>
-                    <br />
-                </li>
-                <li class="draggable d">item 1</li>
-                <li class="draggable d">item 2</li>
-                <li class="draggable d">item 3</li>
-                <li class="draggable d">item 4</li>
-            </ul>
-        </div>
+        <h3>Demo:</h3>
+        <br>
+        <ul>
+            <li class="draggable a">1. item 1</li>
+            <li class="draggable a">1. item 2</li>
+            <li class="draggable a">1. item 3</li>
+        </ul>
+        <br>
+        <hr>
         
         
+        <h2>Draggable sample 2</h2>
+        <h3>Desctiption:</h3>
+        <p>Drag by a child element (handler)  and  reverts to original position.</p>
+            
+        <h3>Code:</h3>
+        <blockquote>
+            <p>var drag2 = new SDND('.draggable.b'); <br />
+                drag2.options.elHandler = '.handler';<br />
+                drag2.options.revert = true;<br />
+                drag2.init();
+           </p>
+        </blockquote>
+            
+        <h3>Demo:</h3>
+        <br>
+        <ul>
+            <li class="draggable b">
+                2. item 1 -
+                <span class="handler">handler</span>
+            </li>
+            <li class="draggable b">
+                2. item 2 -
+                <a class="handler">handler</a>
+            </li>
+            <li class="draggable b" style="background: grey;">
+                2. item 3 -
+                <a class="handler">handler</a>
+            </li>
+        </ul>
+        <br />
+        <hr>
+        
+        
+        <h2>Draggable sample 3</h2>
+        <h3>Desctiption:</h3>
+        <p>Calls user defined functions during dragStart(), dragging() and dragEnd()</p>
+            
+        <h3>Code:</h3>
+        <blockquote>
+            <p>var drag3 = new SDND('.draggable.c');<br />
+                drag3.options.revert = true;<br />
+                drag3.callbacks = {<br />
+                    &nbsp;&nbsp;&nbsp;dragStart : function() { drag3.currentEl.text('dragStart event called'); },<br />
+                    &nbsp;&nbsp;&nbsp;dragging : function() { rag3.currentEl.text('dragging event called'); },<br />
+                    &nbsp;&nbsp;&nbsp;dragEnd : function() { drag3.currentEl.text('dragEnd event called'); }<br />
+                };<br />
+                drag3.init();
+           </p>
+        </blockquote>
+            
+        <h3>Demo:</h3>
+        <br>
+        <ul>
+            <li class="draggable c">3. item 1</li>
+            <li class="draggable c">3. item 2</li>
+            <li class="draggable c">3. item 3</li>
+        </ul>
+        <br />
+        <hr>
+        
+        
+        <h2>Draggable sample 4</h2>
+        <h3>Desctiption:</h3>
+        <p>Preserves original element and drags a clone. Keeps visible on screen.</p>
+            
+        <h3>Code:</h3>
+        <blockquote>
+            <p>var drag4 = new SDND('.draggable.d');<br />
+                drag4.options.moveOriginal = false;<br />
+                drag4.options.revert = false;<br />
+                drag4.options.fixedPosition = true;<br />
+                drag4.init();
+           </p>
+        </blockquote>
+            
+        <h3>Demo:</h3>
+        <br />
+        <ul>
+            <li class="draggable d">3. item 1</li>
+            <li class="draggable d">3. item 2</li>
+            <li class="draggable d">3. item 3</li>
+        </ul>
+
+        <footer class="site-footer">
+            <span class="site-footer-owner"><a href="https://github.com/alien45/SDND">SDND - Simple DragNDrop</a> is maintained by <a href="https://github.com/alien45">alien45</a>.</span>
+            
+            <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+        </footer>
+
+    </section>
+
+  
+      
         <script type="text/javascript">
             //Draggable sample 1
             new SDND('.draggable.a').init();
@@ -119,17 +201,10 @@
             //Draggable sample 4
             var drag4 = new SDND('.draggable.d');
             drag4.options.moveOriginal = false;
-            drag4.options.revert = true;
+            drag4.options.revert = false;
+            drag4.options.fixedPosition = true;
             drag4.init();
             
-            
-            var counter = 1;
-            var sum = 0;
-            for (var counter = 1; counter <= 5; counter++) {
-                sum += counter;
-            }
-            console.log(sum);
         </script>
-    </body>
-
+  </body>
 </html>
