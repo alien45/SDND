@@ -1,2 +1,0 @@
-# SDND
-Simple DragNDrop
