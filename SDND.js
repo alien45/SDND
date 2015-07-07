@@ -24,9 +24,9 @@ var SDND = function(el) {
     };
     
     this.callbacks = {
-        dragStart       :   function() { },
-        dragging        :   function() { },
-        dragEnd        :   function() { }
+        dragStart       :   function(event) { },
+        dragging        :   function(event) { },
+        dragEnd        :   function(event) { }
     };
     this.data = {};                     //optional || could be useful for droppable function 
     
@@ -110,7 +110,7 @@ SDND.prototype.init = function(){
             //first time dragging
             if (!isDragging) {
                 //user callback function
-                callbacks.dragStart();
+                callbacks.dragStart(e);
             }
             if (!moveOriginal && !isDragging) {
                 $clone = $currentEl.clone( cloneEvents );
@@ -144,7 +144,7 @@ SDND.prototype.init = function(){
         $overlay.append($elOverlay);
         $currentEl.prepend($overlay);
         //call user defined function
-        callbacks.dragging();
+        callbacks.dragging(e);
      }
     });
     
@@ -177,7 +177,7 @@ SDND.prototype.init = function(){
                     $currentEl.attr('style', style);
                 }
             }
-            callbacks.dragEnd();
+            callbacks.dragEnd(e);
             $currentEl.find('.SDND.overlay').remove();
             $('body').css({'user-select'   :  'text'});
         }
