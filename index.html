@@ -53,9 +53,9 @@
         <h1>
         <a id="sdnd---simple-dragndrop" class="anchor" href="#sdnd---simple-dragndrop" aria-hidden="true"><span class="octicon octicon-link"></span></a>SDND - Simple DragNDrop</h1>
     
-        <p>SDND is a very lightweight JavaScript &amp; jQuery based plugin that allows you to make any HTML element draggable (and droppable functionality will be added soon) with a simple line of code. </p>
+        <p>SDND is a very lightweight JavaScript &amp; jQuery based plugin that allows you to make any HTML element draggable (droppable functionality will be added soon) with a simple line of code. </p>
         
-        <p>You can add callback functions and lot more. Head over to the project page on GitHub for more details or download and try it out yourself. It is free to use and released under MIT license. Enjoy :)</p>
+        <p>Events are added dynamically to any current or future elements. You can add callback functions and lot more. Head over to the project page on GitHub for more details, feedback &amp; suggestions or <a href="https://github.com/alien45/SDND/zipball/master">download and try it out yourself now</a>. It is free to use and released under MIT license. Enjoy :)</p>
     
     
     
@@ -148,14 +148,16 @@
         
         <h2>Draggable sample 4</h2>
         <h3>Desctiption:</h3>
-        <p>Preserves original element and drags a clone. Keeps visible on screen.</p>
+        <p>Preserves original element and drags a clone of the original element. Keeps element always on top.</p>
             
         <h3>Code:</h3>
         <pre>
         var drag4 = new SDND('.draggable.d');
         drag4.options.moveOriginal = false;
-        drag4.options.revert = false;
-        drag4.options.fixedPosition = true;
+        drag4.options.revert = false;   //false = put element back to original place
+        drag4.options.fixedPosition = true; //Position: fixed or absolute
+        drag4.options.cloneEvents = true; //keep original element's events
+        drag4.options.elOverlay = $('&lt;img src="drag_icon.png" /&gt;');
         drag4.init();</pre>
             
         <h3>Demo:</h3>
@@ -213,6 +215,8 @@
             drag4.options.moveOriginal = false;
             drag4.options.revert = false;
             drag4.options.fixedPosition = true;
+            drag4.options.cloneEvents = true;
+            drag4.options.elOverlay = $('<img src="drag_icon.png" />');
             drag4.init();
             
         </script>
