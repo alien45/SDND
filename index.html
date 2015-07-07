@@ -64,9 +64,8 @@
         <p>Drag/move element around the screen with a simple single of line code. Supports standard jQuery selector.</p>
             
         <h3>Code:</h3>
-        <blockquote>
-            <p>new SDND('.draggable.a').init();</p>
-        </blockquote>
+        <pre>
+        new SDND('.draggable.a').init();</pre>
             
         <h3>Demo:</h3>
         <br>
@@ -84,13 +83,11 @@
         <p>Drag by a child element (handler)  and  reverts to original position.</p>
             
         <h3>Code:</h3>
-        <blockquote>
-            <p>var drag2 = new SDND('.draggable.b'); <br />
-                drag2.options.elHandler = '.handler';<br />
-                drag2.options.revert = true;<br />
-                drag2.init();
-           </p>
-        </blockquote>
+        <pre>
+        var drag2 = new SDND('.draggable.b');
+        drag2.options.elHandler = '.handler';
+        drag2.options.revert = true;
+        drag2.init();</pre>
             
         <h3>Demo:</h3>
         <br>
@@ -117,17 +114,26 @@
         <p>Calls user defined functions during dragStart(), dragging() and dragEnd()</p>
             
         <h3>Code:</h3>
-        <blockquote>
-            <p>var drag3 = new SDND('.draggable.c');<br />
-                drag3.options.revert = true;<br />
-                drag3.callbacks = {<br />
-                    &nbsp;&nbsp;&nbsp;dragStart : function() { drag3.currentEl.text('dragStart event called'); },<br />
-                    &nbsp;&nbsp;&nbsp;dragging : function() { rag3.currentEl.text('dragging event called'); },<br />
-                    &nbsp;&nbsp;&nbsp;dragEnd : function() { drag3.currentEl.text('dragEnd event called'); }<br />
-                };<br />
-                drag3.init();
-           </p>
-        </blockquote>
+        <pre>
+        var drag3 = new SDND('.draggable.c');
+        drag3.options.revert = true;
+        drag3.callbacks = {
+            dragStart : function(event) { 
+                drag3.currentEl.css({'background' : 'yellow'});
+                text = drag3.currentEl.text();
+            },
+            dragging : function(event) {
+                $div = $('&lt;div&gt;&lt;/div&gt;');
+                $div.append(text + ' | dragging() called: ' + event.target.nodeName + '&lt;br /&gt;');
+                $div.append('Mouse position: top: ' + event.pageY + ', left: ' + event.pageY);
+                drag3.currentEl.html($div); 
+            },
+            dragEnd : function(event) {
+                drag3.currentEl.css({'background' : ''}); 
+                drag3.currentEl.text(text);
+            }
+        };
+        drag3.init();</pre>
             
         <h3>Demo:</h3>
         <br>
@@ -145,14 +151,12 @@
         <p>Preserves original element and drags a clone. Keeps visible on screen.</p>
             
         <h3>Code:</h3>
-        <blockquote>
-            <p>var drag4 = new SDND('.draggable.d');<br />
-                drag4.options.moveOriginal = false;<br />
-                drag4.options.revert = false;<br />
-                drag4.options.fixedPosition = true;<br />
-                drag4.init();
-           </p>
-        </blockquote>
+        <pre>
+        var drag4 = new SDND('.draggable.d');
+        drag4.options.moveOriginal = false;
+        drag4.options.revert = false;
+        drag4.options.fixedPosition = true;
+        drag4.init();</pre>
             
         <h3>Demo:</h3>
         <br />
@@ -192,8 +196,10 @@
                     text = drag3.currentEl.text();
                 },
                 dragging : function(event) {
-                    drag3.currentEl.html(text + ' | dragging() called: ' + event.target.nodeName 
-                                         + ' <br />Mouse position: top: ' + event.pageY + ', left: ' + event.pageY); 
+                    $div = $('<div></div>');
+                    $div.append(text + ' | dragging() called: ' + event.target.nodeName + '<br />');
+                    $div.append('Mouse position: top: ' + event.pageY + ', left: ' + event.pageY);
+                    drag3.currentEl.html($div); 
                 },
                 dragEnd : function(event) {
                     drag3.currentEl.css({'background' : ''}); 
