@@ -111,6 +111,18 @@ SDND.prototype.init = function(){
             if (!isDragging) {
                 //user callback function
                 callbacks.dragStart(e);
+                //prevents clicks 
+                var $overlay = $('<div></div>');
+                $overlay.addClass('SDND overlay');
+                $overlay.css({
+                    position: 'absolute',
+                    top:0,
+                    left:0,
+                    right:0,
+                    bottom:0
+                });
+                $overlay.append($elOverlay);
+                $currentEl.prepend($overlay);
             }
             if (!moveOriginal && !isDragging) {
                 $clone = $currentEl.clone( cloneEvents );
@@ -131,18 +143,7 @@ SDND.prototype.init = function(){
              
             
             
-        //prevents clicks 
-        var $overlay = $('<div></div>');
-        $overlay.addClass('SDND overlay');
-        $overlay.css({
-            position: 'absolute',
-            top:0,
-            left:0,
-            right:0,
-            bottom:0
-        });
-        $overlay.append($elOverlay);
-        $currentEl.prepend($overlay);
+
         //call user defined function
         callbacks.dragging(e);
      }
