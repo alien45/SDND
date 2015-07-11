@@ -2,7 +2,7 @@
 <html lang="en-us">
   <head>
     <meta charset="UTF-8">
-    <title>SDND - Simple DragNDrop by alien45</title>
+    <title>SDND - Simple DragNDrop by Toufiqur Chowdhury</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
@@ -115,6 +115,7 @@
             
         <h3>Code:</h3>
         <pre>
+        var text= '';
         var drag3 = new SDND('.draggable.c');
         drag3.options.revert = true;
         drag3.callbacks = {
@@ -187,9 +188,9 @@
             drag2.options.elHandler = '.handler';
             drag2.options.revert = true;
             drag2.init();
-            var text= '';
             
             //Draggable sample 3
+            var text = '';
             var drag3 = new SDND('.draggable.c');
             drag3.options.revert = true;
             drag3.callbacks = {
