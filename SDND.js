@@ -68,7 +68,6 @@ SDND.prototype.init = function(){
     
     //dragStart
     $(document).on("mousedown", elHandler,function(e){
-//        console.log("\nmousedown: " + e.target.nodeName);
         //e.preventDefault();
         
         
@@ -82,24 +81,24 @@ SDND.prototype.init = function(){
 
             xOffset = e.pageX - pos.left;
             yOffset = e.pageY - pos.top;
-            $('body').css({'user-select'   :  'none'}); //make text unselectable only during drag
+            $('body').css({'user-select'   :  'none'}); //prevent text selection during drag events
         }
     });
     
     
     //onDrag
     /*
-        $(document).on('mousemove', elHandler, function(){}) causes lags and looses fluidity..... 
-        especially if the element contains video/embed
+        $(document).on('mousemove', elHandler, function(){}) causes lags and looses fluidity.....
+        especially if the element contains video/embed and/or dragging too fast!
         this is most likely the reason jQuery-ui has the same issues
     */
     $(document).mousemove(function(e){
         //e.preventDefault(); //do not use;
-        if (dragStarted) {
+        if (dragStarted && $currentEl != null) {
             
             
-            var pageX = e.pageX;
-            var pageY = e.pageY;
+            var pageX = e.pageX - (moveOriginal ? xOffset : 0);
+            var pageY = e.pageY - (moveOriginal ? yOffset : 0);
             if (position == 'fixed') {
                 //adjust position to keep element on screen
                 pageX -= $(document).scrollLeft();
@@ -109,8 +108,14 @@ SDND.prototype.init = function(){
             $(el).css({'z-index' : ''});
             //first time dragging
             if (!isDragging) {
-                //user callback function
-                callbacks.dragStart(e);
+                 
+                if (!moveOriginal) {
+                    $clone = $currentEl.clone( cloneEvents );
+                    //$('body').append($clone);
+                    $clone.insertAfter($currentEl);
+                    $currentEl = $clone;
+                }
+                
                 //prevents clicks 
                 var $overlay = $('<div></div>');
                 $overlay.addClass('SDND overlay');
@@ -123,25 +128,19 @@ SDND.prototype.init = function(){
                 });
                 $overlay.append($elOverlay);
                 $currentEl.prepend($overlay);
-            }
-            if (!moveOriginal && !isDragging) {
-                $clone = $currentEl.clone( cloneEvents );
-                //$('body').append($clone);
-                $clone.insertAfter($currentEl);
-            } else {
-                pageY -= yOffset;
-                pageX -= xOffset;
-            }
+                
+                
+                //user callback function
+                callbacks.dragStart(e);
+            } 
+            
             isDragging = true;
-            $currentEl = (moveOriginal) ? $currentEl : $clone;
             $currentEl.css({
                 'position'  :   position,
                 'top'       :   pageY + "px",
                 'left'      :   pageX + "px",
                 'z-index'   :   9999999999
             });
-             
-            
             
 
         //call user defined function
@@ -157,6 +156,7 @@ SDND.prototype.init = function(){
         //e.preventDefault();
         if (isDragging) {
             if (!moveOriginal) {
+                
                 $currentEl = $clone;
                 var pos = $currentEl.offset();
                 if (position == 'fixed') {
@@ -164,12 +164,16 @@ SDND.prototype.init = function(){
                     pos.left -= $(document).scrollLeft();
                     pos.top -= $(document).scrollTop();
                 }
+                
                 $currentEl.css({
                     'position'      :   position,
                     'top'           :   pos.top + 'px',
                     'left'          :   pos.left + 'px'
                 });
+                
+                //remove clone
                 if (revert) $clone.remove();
+                
             } else {
                 if (revert) {
                     //revert element to original place
@@ -178,6 +182,7 @@ SDND.prototype.init = function(){
                     $currentEl.attr('style', style);
                 }
             }
+            
             callbacks.dragEnd(e);
             $currentEl.find('.SDND.overlay').remove();
             $('body').css({'user-select'   :  'text'});
