@@ -13,6 +13,7 @@ var SDND = function(el) {
     this.currentEl = null; //
     this.currentElOriginal = null;
     this.currentElOriginalStyleAttr = null;//position, top , left
+    this.isDragging = false;
     //set default options
     this.options = {
         'moveOriginal'      :   true,
@@ -34,6 +35,7 @@ var SDND = function(el) {
 
 
 
+//call only once
 SDND.prototype.init = function(){
     var obj     = this;
     var el      = obj.el;
@@ -49,7 +51,7 @@ SDND.prototype.init = function(){
     
     var xOffset = 0
     var yOffset = 0;
-    var isDragging = false;
+    var isDragging = obj.isDragging = false;
     var dragStarted = false;
     
     var $currentEl = null;
@@ -150,7 +152,7 @@ SDND.prototype.init = function(){
     
     //dragEnd
     /*
-        $(document).on('mouseup', elHandler, function(e){}); casuses the embed to become unclickable
+        $(document).on('mouseup', elHandler, function(e){});
     */
     $(document).mouseup( function(e){
         //e.preventDefault();
@@ -207,7 +209,7 @@ SDND.prototype.init = function(){
 SDND.prototype.droppable = function(elDrop){ //
     this.elDrop = elDrop;
     this.dropOptions = {
-    }
+    };
     this.dropCallbacks = {
         dropEnter       :   function() { },
         dropLeave        :   function() { },
@@ -215,7 +217,9 @@ SDND.prototype.droppable = function(elDrop){ //
         dropping        :   function() { },
         dropped        :   function() { }
     };
+    
 };
+
 
 SDND.prototype.initDroppable = function(){
     var obj = this;
@@ -224,5 +228,33 @@ SDND.prototype.initDroppable = function(){
     var moveOriginal = this.options.moveOriginal;
     var dragOptions = this.dropOptions;
 
-}
+    $(document).on( 'mouseup', elDrop, function(e){
+        console.log('droppable>mouseup');
+        
+        if (obj.isDragging) {
+            console.log('isDragging');
+        }
+    });
+};
+
+
+
+/*
+ *
+ *
+ *    todo: after droppable
+ *
+ *
+ *
+ */
+SDND.prototype.resizable = function(elHandler){ //
+    this.elHandler = elHandler;
+    this.dropOptions = {
+    };
+    this.resizeCallbacks = {
+        resizeStart       :   function() { },
+        resizing        :   function() { },
+        resizeEnd        :   function() { }
+    };
+};
             
