@@ -157,6 +157,15 @@ SDND.prototype.init = function(){
                 }
                 if(isDroppable) {
                     $droppableEl.removeClass('dropped').removeClass('dragOver').removeClass('dragLeave');
+                    droppables = []; //reset
+                    $droppableEl.each(function() {
+                        var $child = $(this);
+                        // and save them in a container for later access
+                        droppables.push({
+                            $el: $child,
+                            rect: new Rectangle( $child.offset().left, $child.offset().top, $child.outerWidth(), $child.outerHeight() )
+                        });
+                    });
 
                 }
                 //user callback function
@@ -174,15 +183,6 @@ SDND.prototype.init = function(){
 
             //droppable
             if (isDroppable) {
-                droppables = []; //reset
-                $droppableEl.each(function() {
-                    $child = $(this);
-                    // and save them in a container for later access
-                    droppables.push({
-                        $el: $child,
-                        rect: new Rectangle( $child.offset().left, $child.offset().top, $child.outerWidth(), $child.outerHeight())
-                    });
-                });
                 for (var i in droppables) {
                     var alreadyIn = droppables[i].$el.hasClass("dragOver");
                     if ( pointOverRectangle( droppables[i].rect, e.pageX, e.pageY ) ) {
@@ -194,37 +194,41 @@ SDND.prototype.init = function(){
                         } else {   
                             droppables[i].$el.find('.drop-indicator').remove();
                         }
-                            var nodeName = $currentEl[0].nodeName;
-                            var $dropIndicator = $('<' + nodeName + ' class="drop-indicator">Drop here....</' + nodeName + '>');
-                            $dropIndicator.css({
-                                width: $currentEl.outerWidth() + 'px',
-                                height: $currentEl.outerHeight() + 'px',
-                                border: '2px solid',
-                                'border-style': 'dashed',
-                                //background: 'white',
-                                'text-align': 'center'
-                                //color: 'green'
-                            });
-                            var indicatorAdded = false;
-                            
-                            //drop before/after child
-                            var children = droppables[i].$el.children();
-
-                            if (children.length > 0) {
-                                children.each(function(index) {
-                                    var $child = $(this);
+                        var nodeName = $currentEl[0].nodeName;
+                        var $dropIndicator = $('<' + nodeName + ' class="drop-indicator">Drop here....</' + nodeName + '>');
+                        $dropIndicator.css({
+                            width: $currentEl.outerWidth() + 'px',
+                            height: $currentEl.outerHeight() + 'px',
+                            border: '2px solid',
+                            'border-style': 'dashed',
+                            //background: 'white',
+                            'text-align': 'center'
+                            //color: 'green'
+                        });
+                        var indicatorAdded = false;
+                        
+                        //drop before/after child
+                        var children = droppables[i].$el.children();
+                        if (children.length > 0) {
+                            children.each(function(index) {
+                                var $child = $(this);
+                                //ignore if child is the element being dragged
+                                if (!$child.get(0).isEqualNode( $currentEl.get(0))) {
                                     var rect = new Rectangle($child.offset().left, $child.offset().top, $child.outerWidth(), $child.outerHeight());
-                                    if (pointOverRectangle( rect, e.pageX, e.pageY ) ) {  
+                                    if (pointOverRectangle( rect, e.pageX, e.pageY ) ) { 
+                                        
+                                    console.log("" + $child.get(0).isEqualNode( $currentEl.get(0)) );
                                         $child.before($dropIndicator);
                                         indicatorAdded = true;
                                     }
-                                    
-                                });
-                            }
-                            
-                            if (indicatorAdded == false) {
-                                $dropIndicator.appendTo(droppables[i].$el);
-                            }
+                                }
+                                
+                            });
+                        }
+                        
+                        if (indicatorAdded == false) {
+                            $dropIndicator.appendTo(droppables[i].$el);
+                        }
                             
                     } else {
                         //drop leave
