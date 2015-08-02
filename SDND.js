@@ -14,7 +14,7 @@ function SDND(el) {
     this.currentElOriginal = null;
     this.currentElOriginalStyleAttr = null;//position, top , left, z-index....
     this.isDragging = false;
-    this.droppableEl = '.droppable';
+    this.droppableEl = '';
     
     //default options
     this.options = {
@@ -151,7 +151,7 @@ SDND.prototype.init = function(){
                 if ( obj.droppableEll instanceof jQuery) {  //instanceof jQuery or instanceof HTMLElement
                     $droppableEl = obj.droppableEl;
                     isDroppable = true;
-                } else if (typeof obj.droppableEl == 'string' && obj.droppableEl.trim() !== '') {
+                } else if (typeof obj.droppableEl == 'string' && obj.droppableEl.trim() != '') {
                     $droppableEl = $(obj.droppableEl);
                     isDroppable = true;
                 }
@@ -216,8 +216,6 @@ SDND.prototype.init = function(){
                                 if (!$child.get(0).isEqualNode( $currentEl.get(0))) {
                                     var rect = new Rectangle($child.offset().left, $child.offset().top, $child.outerWidth(), $child.outerHeight());
                                     if (pointOverRectangle( rect, e.pageX, e.pageY ) ) { 
-                                        
-                                    console.log("" + $child.get(0).isEqualNode( $currentEl.get(0)) );
                                         $child.before($dropIndicator);
                                         indicatorAdded = true;
                                     }

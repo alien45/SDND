@@ -37,15 +37,20 @@
         
         .handler {
             background: yellow;
+            color: red;
         }
         
         .droppable {
             min-width: 200px;
             min-height: 100px;
             border: 1px solid green;
-            color: red;
+            color: green;
         }
-
+        .droppable:after {
+            content: "Droppable container";
+            color: grey;
+            z-index: -1;
+          }
         .dragOver {
             background: yellow;   
         }
@@ -54,12 +59,7 @@
             background: green;   
         }
         
-        .Xdrop-indicator {
-          border: 2px solid;
-          border-style: dashed;
-          background: white;
-          text-align: center;
-        }
+        
     </style>
   </head>
   <body>
@@ -101,13 +101,14 @@
         <hr>
         
         
-        <h2>Draggable sample 2</h2>
+        <h2>Draggable sample 2: Droppable with handler</h2>
         <h3>Desctiption:</h3>
         <p>Drag by a child element (handler)  and  reverts to original position.</p>
             
         <h3>Code:</h3>
         <pre>
         var drag2 = new SDND('.draggable.b');
+        drag2.droppableEl = '.droppable'; //make droppable
         drag2.options.elHandler = '.handler';
         drag2.options.revert = true;
         drag2.init();</pre>
@@ -132,13 +133,7 @@
                 2. item 4 -
                 <a class="handler">handler</a>
             </li>
-            <li class="draggable b" style="background: grey;">
-                2. item 5 -
-                <a class="handler">handler</a>
-            </li>
         </ul>
-        
-        <ul class="droppable"></ul>
         
         <br />
         <hr>
@@ -220,10 +215,9 @@
             
             //Draggable sample 2
             var drag2 = new SDND('.draggable.b');
-            drag2.droppableEl = '.droppable';
+            drag2.droppableEl = '.droppable'; //make droppable
             drag2.options.elHandler = '.handler';
             drag2.options.revert = true;
-            drag2.options.moveOriginal = true;
             drag2.init();
             
             
