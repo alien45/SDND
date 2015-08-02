@@ -30,10 +30,10 @@ function SDND(el) {
         dragStart       :   function(event) { },
         dragging        :   function(event) { },
         dragEnd         :   function(event) { },
-        dropEnter       :   function(event, $droppableEl) { console.log('dropEnter'); },
-        dropLeave       :   function(event, $droppableEl) { console.log('dropLeave');  },
-        dropCancel         :   function(event, $droppableEl) { console.log('dropCancel'); }, //if (!dropped)
-        dropped         :   function(event, $droppableEl) { console.log('dropped'); }
+        dropEnter       :   function(event, $droppableEl) { console.log('callback: dropEnter'); },
+        dropLeave       :   function(event, $droppableEl) { console.log('callback: dropLeave');  },
+        dropCancel         :   function(event, $droppableEl) { console.log('callback: dropCancel'); }, //if (!dropped)
+        dropped         :   function(event, $droppableEl) { console.log('callback: dropped'); }
     };
 
 };
@@ -156,15 +156,8 @@ SDND.prototype.init = function(){
                     isDroppable = true;
                 }
                 if(isDroppable) {
-                    droppables = []; //reset
-                    $droppableEl.each(function() {
-                        $(this).removeClass('dropped').removeClass('dragOver').removeClass('dragLeave');
-                        // and save them in a container for later access
-                        droppables.push({
-                            $el: $(this),
-                            rect: new Rectangle( $(this).offset().left, $(this).offset().top, $(this).width(), $(this).height())
-                        });
-                    });
+                    $droppableEl.removeClass('dropped').removeClass('dragOver').removeClass('dragLeave');
+
                 }
                 //user callback function
                 callbacks.dragStart(e);
@@ -181,23 +174,66 @@ SDND.prototype.init = function(){
 
             //droppable
             if (isDroppable) {
+                droppables = []; //reset
+                $droppableEl.each(function() {
+                    $child = $(this);
+                    // and save them in a container for later access
+                    droppables.push({
+                        $el: $child,
+                        rect: new Rectangle( $child.offset().left, $child.offset().top, $child.outerWidth(), $child.outerHeight())
+                    });
+                });
                 for (var i in droppables) {
+                    var alreadyIn = droppables[i].$el.hasClass("dragOver");
                     if ( pointOverRectangle( droppables[i].rect, e.pageX, e.pageY ) ) {
                         //drop enter
-                        if (droppables[i].$el.hasClass("dragOver")) {
-                            //already over droppable container
-                        } else {
+                        if (!alreadyIn) {
                             droppables[i].$el.addClass("dragOver");
                             //invoke callback function
                             obj.callbacks.dropEnter(e, droppables[i].$el);
+                        } else {   
+                            droppables[i].$el.find('.drop-indicator').remove();
                         }
+                            var nodeName = $currentEl[0].nodeName;
+                            var $dropIndicator = $('<' + nodeName + ' class="drop-indicator">Drop here....</' + nodeName + '>');
+                            $dropIndicator.css({
+                                width: $currentEl.outerWidth() + 'px',
+                                height: $currentEl.outerHeight() + 'px',
+                                border: '2px solid',
+                                'border-style': 'dashed',
+                                //background: 'white',
+                                'text-align': 'center'
+                                //color: 'green'
+                            });
+                            var indicatorAdded = false;
+                            
+                            //drop before/after child
+                            var children = droppables[i].$el.children();
+
+                            if (children.length > 0) {
+                                children.each(function(index) {
+                                    var $child = $(this);
+                                    var rect = new Rectangle($child.offset().left, $child.offset().top, $child.outerWidth(), $child.outerHeight());
+                                    if (pointOverRectangle( rect, e.pageX, e.pageY ) ) {  
+                                        $child.before($dropIndicator);
+                                        indicatorAdded = true;
+                                    }
+                                    
+                                });
+                            }
+                            
+                            if (indicatorAdded == false) {
+                                $dropIndicator.appendTo(droppables[i].$el);
+                            }
+                            
                     } else {
                         //drop leave
-                        if (droppables[i].$el.hasClass("dragOver")) {
+                        if (alreadyIn) {
+                            droppables[i].$el.removeClass("dragOver"); 
+                            droppables[i].$el.find('.drop-indicator').remove();
                             //invoke callback function
                             obj.callbacks.dropLeave(e, droppables[i].$el);
                         }
-                        droppables[i].$el.removeClass("dragOver"); 
                     }
                 }
             }
@@ -245,30 +281,15 @@ SDND.prototype.init = function(){
                 var dropped = false;
                 for (var i in droppables) {
                     if ( pointOverRectangle( droppables[i].rect, e.pageX, e.pageY ) ) {
-                        droppables[i].$el.addClass("dropped");
-                        dropped = true;
                         //remove clone
                         if (revert && !moveOriginal) {
                             $clone.remove();
                         } else {
-                            //drop before/after child
-                            var children = droppables[i].$el.children();
-                            console.log(children.length);
-
-                            if (children.length > 0) {
-                                children.each(function(index) {
-                                    var $child = $(this);
-                                    
-                                    var rect = new Rectangle($child.offset().left, $child.offset().top, $child.width(), $child.height());
-                                    if (pointOverRectangle( rect, e.pageX, e.pageY ) ) {
-                                        $currentEl.insertBefore(droppables[i].$el);
-                                        console.log('before index: ' + index );
-                                    }
-                                });
-                            } else {
-                                $currentEl.appendTo( droppables[i].$el );
-                            }
+                            droppables[i].$el.find('.drop-indicator').replaceWith($currentEl);
+                            droppables[i].$el.addClass("dropped");
+                            dropped = true;
                         }
+                        
                         //invoke callback function
                         obj.callbacks.dropped(e, droppables[i].$el);
                     }

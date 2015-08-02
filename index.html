@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
       
       
-    <script type="text/javascript" src="jquery.min.js"></script>
+    <script type="text/javascript" src="jquery-2.1.4.min.js"></script>
     <script type="text/javascript" src="SDND.js"></script>
       
     <style type="text/css">
@@ -52,6 +52,13 @@
         
         .dropped {
             background: green;   
+        }
+        
+        .Xdrop-indicator {
+          border: 2px solid;
+          border-style: dashed;
+          background: white;
+          text-align: center;
         }
     </style>
   </head>
@@ -208,13 +215,14 @@
             drag2.droppableEl = '.droppable';
             drag2.options.elHandler = '.handler';
             drag2.options.revert = true;
+            drag2.options.moveOriginal = true;
             drag2.init();
             
             
             //Draggable sample 3
             var text = '';
             var drag3 = new SDND('.draggable.c');
-            drag3.options.revert = true;
+            drag3.options.revert = false;
             drag3.callbacks = {
                 dragStart : function(event) { 
                     drag3.currentEl.css({'background' : 'yellow'});
