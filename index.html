@@ -30,7 +30,8 @@
             list-style-type: none;  
         }
         ul li {
-            display:inline;
+            /*float: left;*/
+            display:inline-block;
             padding: 10px;
         }
         
@@ -42,10 +43,15 @@
             min-width: 200px;
             min-height: 100px;
             border: 1px solid green;
+            color: red;
+        }
+
+        .dragOver {
+            background: yellow;   
         }
         
-        .droppable:hover {
-            background: yellow;
+        .dropped {
+            background: green;   
         }
     </style>
   </head>
@@ -100,7 +106,7 @@
         drag2.init();</pre>
             
         <h3>Demo:</h3>
-        <div class="droppable"></div>
+        <ul class="droppable"></ul>
         <br>
         <ul>
             <li class="draggable b">
@@ -116,6 +122,8 @@
                 <a class="handler">handler</a>
             </li>
         </ul>
+        
+        <ul class="droppable"></ul>
         
         <br />
         <hr>
@@ -197,11 +205,11 @@
             
             //Draggable sample 2
             var drag2 = new SDND('.draggable.b');
+            drag2.droppableEl = '.droppable';
             drag2.options.elHandler = '.handler';
             drag2.options.revert = true;
             drag2.init();
             
-            drag2.initDroppable();
             
             //Draggable sample 3
             var text = '';
@@ -233,6 +241,8 @@
             drag4.options.cloneEvents = true;
             drag4.options.elOverlay = $('<img src="drag_icon.png" />');
             drag4.init();
+            
+
             
         </script>
   </body>
