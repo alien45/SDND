@@ -14,7 +14,11 @@ function SDND(el) {
     this.currentElOriginal = null;
     this.currentElOriginalStyleAttr = null;//position, top , left, z-index....
     this.isDragging = false;
-    this.droppableEl = '';
+    this.droppableEl = ''; //jQuery object or selector
+    this.dropOptions = {
+        'handlerEl'   : '', //ToDo
+        'indicator' : 'Drop here...' //text or jQuery object
+    };
     
     //default options
     this.options = {
@@ -32,7 +36,7 @@ function SDND(el) {
         dragEnd         :   function(event) { },
         dropEnter       :   function(event, $droppableEl) { console.log('callback: dropEnter'); },
         dropLeave       :   function(event, $droppableEl) { console.log('callback: dropLeave');  },
-        dropCancel         :   function(event, $droppableEl) { console.log('callback: dropCancel'); }, //if (!dropped)
+        dropCancel      :   function(event, $droppableEl) { console.log('callback: dropCancel'); },
         dropped         :   function(event, $droppableEl) { console.log('callback: dropped'); }
     };
 
@@ -195,15 +199,15 @@ SDND.prototype.init = function(){
                             droppables[i].$el.find('.drop-indicator').remove();
                         }
                         var nodeName = $currentEl[0].nodeName;
-                        var $dropIndicator = $('<' + nodeName + ' class="drop-indicator">Drop here....</' + nodeName + '>');
+                        var $dropIndicator = $('<' + nodeName + ' class="drop-indicator"></' + nodeName + '>');
+                        $dropIndicator.append(obj.dropOptions.indicator);
                         $dropIndicator.css({
                             width: $currentEl.outerWidth() + 'px',
                             height: $currentEl.outerHeight() + 'px',
                             border: '2px solid',
                             'border-style': 'dashed',
-                            //background: 'white',
                             'text-align': 'center'
-                            //color: 'green'
+                            
                         });
                         var indicatorAdded = false;
                         

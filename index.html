@@ -50,13 +50,15 @@
             content: "Droppable container";
             color: grey;
             z-index: -1;
-          }
+        }
         .dragOver {
             background: yellow;   
         }
         
-        .dropped {
-            background: rgba(214, 248, 248, 0.67);   
+        .Xdrop-indicator {    
+            border: 2px solid;
+            border-style: dashed;
+            text-align: center
         }
         
         
@@ -103,7 +105,8 @@
         
         <h2>Draggable sample 2: Droppable with handler</h2>
         <h3>Desctiption:</h3>
-        <p>Drag by a child element (handler)  and  reverts to original position.</p>
+        <p>Drag by a child element (handler)  and  reverts to original position. Supported callback functions:</p>
+
             
         <h3>Code:</h3>
         <pre>
@@ -111,6 +114,16 @@
         drag2.droppableEl = '.droppable'; //make droppable
         drag2.options.elHandler = '.handler';
         drag2.options.revert = true;
+        drag2.callbacks.dropEnter = function(event, $droppableContainer) {
+            drag2.dropOptions.indicator = 'Drop it, man! ;)' ;
+        };
+        drag2.callbacks.dropped = function(event, $droppableContainer) {
+            $droppableContainer.css('background-color', 'rgba(214, 248, 248, 0.67)');
+        };
+        /* other callback functions supported: 
+         *      drag events: dragStart, dragging, dragEnd,
+         *      drop events: dropEnter, dropLeave, dropCancel, dropped
+         */
         drag2.init();</pre>
             
         <h3>Demo:</h3>
@@ -218,6 +231,17 @@
             drag2.droppableEl = '.droppable'; //make droppable
             drag2.options.elHandler = '.handler';
             drag2.options.revert = true;
+            drag2.callbacks.dropEnter = function(event, $droppableContainer) {
+                drag2.dropOptions.indicator = 'Drop it, man! ;)' ;
+            };
+            drag2.callbacks.dropped = function(event, $droppableContainer) {
+                $droppableContainer.css('background-color', 'rgba(214, 248, 248, 0.67)');
+            };
+            
+            /* other callback functions supported: 
+             *      drag events: dragStart, dragging, dragEnd,
+             *      drop events: dropEnter, dropLeave, dropCancel, dropped
+             */
             drag2.init();
             
             
