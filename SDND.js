@@ -308,7 +308,6 @@ SDND.prototype.init = function(){
             }
             
             
-            $currentEl.find('.SDND.overlay').remove();
             $('body').css({'user-select'   :  'text'}); 
         }
         
@@ -316,6 +315,9 @@ SDND.prototype.init = function(){
         //reset variables
         isDragging = dragStarted = false;
         $element = $clone = obj.currentEl = obj.currentElOriginal = null;
+        
+        
+            $('.SDND.overlay').remove();
     });
     
 }; //SDND.prototype.init end
@@ -333,7 +335,8 @@ SDND.prototype.init = function(){
  *
  */
 SDND.prototype.resizable = function(elHandler){ //
-    this.elHandler = elHandler;
+    var obj = this;
+    this.elHandler = (typeof elHandler == 'undefined' || elHandler.trim() === '') ?  obj.el : elHandler;
     this.resizeOptions = {
     };
     this.resizeCallbacks = {
